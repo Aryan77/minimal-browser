@@ -211,8 +211,6 @@ class HTMLParser:
             parent.children.append(node)
         return self.unfinished.pop()
 
-# upto lab4 here
-
 BLOCK_ELEMENTS = [
     "html", "body", "article", "section", "nav", "aside",
     "h1", "h2", "h3", "h4", "h5", "h6", "hgroup", "header",
@@ -241,8 +239,6 @@ class DrawRect:
     def __repr__(self):
         return "DrawRect(top={} left={} bottom={} right={} color={})".format(
             self.top, self.left, self.bottom, self.right, self.color)
-
-# upto lab5 here
 
 class DrawText:
     def __init__(self, x1, y1, text, font, color):
@@ -453,8 +449,6 @@ INHERITED_PROPERTIES = {
     "font-weight": "normal",
     "color": "black",
 }
-
-# upto lab6 here
 
 class LineLayout:
     def __init__(self, node, parent, previous):
@@ -681,14 +675,14 @@ class DocumentLayout:
     def __repr__(self):
         return "DocumentLayout()"
 
-CHROME_PX = 100
+CHROME_PX = 85
 
 class Tab:
     def __init__(self):
         self.url = None
         self.history = []
 
-        with open("browser6.css") as f:
+        with open("browser.css") as f:
             self.default_style_sheet = CSSParser(f.read()).parse()
 
     def load(self, url):
@@ -759,6 +753,7 @@ class Tab:
 class Browser:
     def __init__(self):
         self.window = tkinter.Tk()
+        self.window.title("Minimal Browser")
         self.canvas = tkinter.Canvas(
             self.window,
             width=WIDTH,
@@ -828,9 +823,9 @@ class Browser:
         self.canvas.create_rectangle(0, 0, WIDTH, CHROME_PX,
                                      fill="white", outline="black")
 
-        tabfont = get_font(20, "normal", "roman")
+        tabfont = get_font(15, "normal", "roman")
         for i, tab in enumerate(self.tabs):
-            name = "Tab {}".format(i)
+            name = "Tab {}".format(i + 1)
             x1, x2 = 40 + 80 * i, 120 + 80 * i
             self.canvas.create_line(x1, 0, x1, 40, fill="black")
             self.canvas.create_line(x2, 0, x2, 40, fill="black")
@@ -841,28 +836,25 @@ class Browser:
                 self.canvas.create_line(x2, 40, WIDTH, 40, fill="black")
 
         buttonfont = get_font(30, "normal", "roman")
-        self.canvas.create_rectangle(10, 10, 30, 30,
-                                     outline="black", width=1)
         self.canvas.create_text(11, 0, anchor="nw", text="+",
                                 font=buttonfont, fill="black")
 
-        self.canvas.create_rectangle(40, 50, WIDTH - 10, 90,
+        self.canvas.create_rectangle(40, 45, WIDTH - 5, 80,
                                      outline="black", width=1)
+
+        addressfont = get_font(15, "normal", "roman")
         if self.focus == "address bar":
             self.canvas.create_text(
                 55, 55, anchor='nw', text=self.address_bar,
-                font=buttonfont, fill="black")
-            w = buttonfont.measure(self.address_bar)
-            self.canvas.create_line(55 + w, 55, 55 + w, 85, fill="black")
+                font=addressfont, fill="black")
+            w = addressfont.measure(self.address_bar)
         else:
             url = self.tabs[self.active_tab].url
             self.canvas.create_text(55, 55, anchor='nw', text=url,
-                                    font=buttonfont, fill="black")
+                                    font=addressfont, fill="black")
 
-        self.canvas.create_rectangle(10, 50, 35, 90,
-                                     outline="black", width=1)
         self.canvas.create_polygon(
-            15, 70, 30, 55, 30, 85, fill='black')
+            15, 65, 30, 55, 30, 75, fill='black')
 
 if __name__ == "__main__":
     import sys
